@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class ChangeColorCard extends PowerCard{
 
-    ChangeColorCard(String type, Color color, int number) {
+    public ChangeColorCard(String type, Color color, Integer number) {
         super(type, color, number);
     }
 
