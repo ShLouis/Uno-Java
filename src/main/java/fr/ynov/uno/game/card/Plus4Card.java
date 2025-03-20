@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class Plus4Card extends PowerCard{
 
-    Plus4Card(String type, Color color, int number) {
+    public Plus4Card(String type, Color color, Integer number) {
         super(type, color, number);
     }
 
