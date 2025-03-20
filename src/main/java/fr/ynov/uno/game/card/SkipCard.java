@@ -3,7 +3,7 @@ package fr.ynov.uno.game.card;
 import java.awt.*;
 
 public class SkipCard extends PowerCard{
-    SkipCard(String type, Color color, int number) {
+    public SkipCard(String type, Color color, Integer number) {
         super(type, color, number);
     }
 
