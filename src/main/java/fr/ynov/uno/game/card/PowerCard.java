@@ -5,10 +5,9 @@ import java.util.Objects;
 
 public abstract class PowerCard extends Card {
 
-    PowerCard(String type, Color color, int number) {
+    PowerCard(String type, Color color, Integer number) {
         super(type, color, number);
     }
 
-    public abstract boolean usePower();
-
+    public abstract void usePower();
 }
