@@ -5,7 +5,7 @@ import fr.ynov.uno.game.Game;
 import java.awt.*;
 
 public class ReverseCard extends PowerCard{
-    ReverseCard(String type, Color color, int number) {
+    public ReverseCard(String type, Color color, Integer number) {
         super(type, color, number);
     }
 
