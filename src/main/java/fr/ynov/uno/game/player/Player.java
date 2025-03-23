@@ -16,13 +16,10 @@ public class Player {
     public List<Card> getPlayerCards() {
         return playerCards;
     }
-    public void setPlayerCards(List<Card> playerCards) {
-        this.playerCards = playerCards;
-    }
 
     public void showCards(){
-        for (Card playerCard : playerCards) {
-            playerCard.show();
+        for (int i=0; i<playerCards.size(); i++) {
+            System.out.println((i+1)+": "+playerCards.get(i).getType());
         }
     }
 
