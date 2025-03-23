@@ -13,7 +13,6 @@ public class Game {
     private List<Player> players;
     private List<Card> usedCards;
     private List<Card> leftoverCards;
-    private int currentPlayer;
     static int direction;
     private final List<Color> colors;
 
@@ -26,7 +25,6 @@ public class Game {
         this.usedCards= new ArrayList<>();
         this.leftoverCards= new ArrayList<>();
         this.players= new ArrayList<>();
-        this.currentPlayer=0;
     }
 
     public List<Player> getPlayers() {
@@ -65,7 +63,7 @@ public class Game {
             leftoverCards.add(new Plus4Card("plus4",null,null));
             leftoverCards.add(new Plus4Card("plus4",null,null));
             leftoverCards.add(new ChangeColorCard("change color",null,null));
-            leftoverCards.add(new ChangeColorCard("chane color",null,null));
+            leftoverCards.add(new ChangeColorCard("change color",null,null));
         }
         Collections.shuffle(leftoverCards);
     }
@@ -89,26 +87,58 @@ public class Game {
         }
     }
 
-    private void round(){
-        System.out.print("Top Card:");
-        usedCards.getLast().show();
-        players.get(currentPlayer).showCards();
-        Scanner sc=new Scanner(System.in);
-        System.out.println("Which Card would you like to play");
-        int choice=sc.nextInt();
-        if (players.get(currentPlayer).getPlayerCards().get(choice).canBePlacedOn(usedCards.getLast())) {
-            usedCards.add(players.get(currentPlayer).playCard(choice));
+    private void placeCard(int player, int choice){
+        if (players.get(player).getPlayerCards().get(choice).canBePlacedOn(usedCards.getLast())) {
+            usedCards.add(players.get(player).playCard(choice));
         }else{
             System.out.println("You can't play that card");
             round();
         }
     }
 
+    private Integer round(){
+        System.out.print("Top Card:");
+        usedCards.getLast().show();
+        System.out.println("used cards:"+usedCards.size());
+        System.out.println("0: Pickup");
+        players.getFirst().showCards();
+        Scanner sc=new Scanner(System.in);
+        System.out.println("Which Card would you like to play");
+        int choice=sc.nextInt();
+        if (choice==0){
+            getPlayers().getFirst().getPlayerCards().add(takeCard());
+        }else {
+            placeCard(0, choice - 1);
+        }
+        for (int i=1; i<players.size();i++) {
+            boolean placedCard = false;
+            for (int j = 0; j < players.get(i).getPlayerCards().size(); j++) {
+                if (players.get(i).getPlayerCards().get(j).canBePlacedOn(usedCards.getLast())) {
+                    placeCard(i, j);
+                    placedCard = true;
+                    break;
+                }
+            }
+            if (!placedCard) {
+                players.get(i).getPlayerCards().add(takeCard());
+            }
+            if (players.get(i).getPlayerCards().isEmpty()) {
+                return i;
+            }
+            System.out.println("player has "+players.get(i).getPlayerCards().size()+" cards left");
+        }
+        return null;
+    }
 
 
-    public void startGame(){
+
+    public void startGame() {
         setupCards();
         dealCards();
-        round();
+        Integer winner=round();
+        while (winner == null) {
+            winner = round();
+        }
+        System.out.println("The Winner is player "+winner);
     }
 }
