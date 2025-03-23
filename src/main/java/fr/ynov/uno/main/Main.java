@@ -8,13 +8,5 @@ public class Main {
         java.util.List<fr.ynov.uno.game.card.Card> cards = new ArrayList<>();
         Game game = new Game();
         game.startGame();
-        cards= game.getLeftoverCards();
-        for (fr.ynov.uno.game.card.Card card : cards) {
-            card.show();
-        }
-        System.out.println("nb of leftovercards:"+cards.size());
-        System.out.println("nb of used cards:"+game.getUsedCards().size());
-        System.out.println(game.getPlayers().size());
-
     }
 }
