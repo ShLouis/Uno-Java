@@ -1,7 +1,5 @@
 package fr.ynov.uno.game.card;
 
-import fr.ynov.uno.game.player.Player;
-
 import java.awt.*;
 import java.util.Objects;
 
@@ -9,8 +7,10 @@ public abstract class Card {
     protected Color color;
     protected Integer number;
     protected String type;
+    protected String name;
 
-    Card(String type, Color color, Integer number) {
+    Card(String name,String type, Color color, Integer number) {
+        this.name = name;
         this.type = type;
         this.color = color;
         this.number = number;
@@ -22,15 +22,16 @@ public abstract class Card {
     public Integer getNumber() {
         return number;
     }
-    public String getType() {
-        return type;
+    public String getName() {
+        return name;
     }
+    public String getType(){return type;}
 
     public boolean canBePlacedOn(Card bottomCard) {
-        return (this.color == null && this.number == null) || (this.color == bottomCard.color) || (Objects.equals(this.number, bottomCard.number));
+        return (this.color == null && this.number == null) || (this.color == bottomCard.color) || (Objects.equals(this.number, bottomCard.number)) || (bottomCard.color==null && bottomCard.number == null);
     }
 
     public void show(){
-        System.out.println(type);
+        System.out.println(name);
     }
 }
