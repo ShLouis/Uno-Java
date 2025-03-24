@@ -4,17 +4,17 @@ import fr.ynov.uno.game.card.*;
 import fr.ynov.uno.game.player.Player;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-import java.util.Scanner;
 
 public class Game {
     private List<Player> players;
     private List<Card> usedCards;
     private List<Card> leftoverCards;
-    static int direction;
+    private int direction;
     private final List<Color> colors;
+    private int currentPlayer;
+    private List<String> colorNames;
 
     public Game() {
         this.colors=new ArrayList<>();
@@ -25,10 +25,32 @@ public class Game {
         this.usedCards= new ArrayList<>();
         this.leftoverCards= new ArrayList<>();
         this.players= new ArrayList<>();
+        direction=1;
+        this.currentPlayer=0;
+        this.colorNames = new ArrayList<>();
+        colorNames.add("RED");
+        colorNames.add("BLUE");
+        colorNames.add("GREEN");
+        colorNames.add("YELLOW");
+    }
+
+    public void setDirection(int d) {
+        direction = d;
+    }
+    public int getDirection() {
+        return direction;
     }
 
     public List<Player> getPlayers() {
         return players;
+    }
+
+    public List<Color> getColors() {
+        return colors;
+    }
+
+    public int getCurrentPlayer() {
+        return currentPlayer;
     }
 
     public List<Card> getLeftoverCards() {
@@ -39,31 +61,22 @@ public class Game {
         return usedCards;
     }
 
-    public void changeDirection() {
-        direction = -direction;
-    }
-
     private void setupCards(){
-        List<String> strColors = new ArrayList<>();
-        strColors.add("RED");
-        strColors.add("BLUE");
-        strColors.add("GREEN");
-        strColors.add("YELLOW");
         for(int j = 0; j<2; j++) {
             for (int i = j; i < 10; i++) {
                 for(int k = 0; k<4; k++){
-                    leftoverCards.add(new RegularCard(strColors.get(k)+i,colors.get(k),i));
+                    leftoverCards.add(new RegularCard(colorNames.get(k)+i,"regular",colors.get(k),i));
                 }
             }
             for(int l = 0; l<4; l++){
-                leftoverCards.add(new SkipCard(strColors.get(l)+"skip",colors.get(l),null));
-                leftoverCards.add(new ReverseCard(strColors.get(l)+"reverse",colors.get(l),null));
-                leftoverCards.add(new Plus2Card(strColors.get(l)+"plus2",colors.get(l),null));
+                leftoverCards.add(new SkipCard(colorNames.get(l)+"skip","power",colors.get(l),null));
+                leftoverCards.add(new ReverseCard(colorNames.get(l)+"reverse","power",colors.get(l),null));
+                leftoverCards.add(new Plus2Card(colorNames.get(l)+"plus2","power",colors.get(l),null));
             }
-            leftoverCards.add(new Plus4Card("plus4",null,null));
-            leftoverCards.add(new Plus4Card("plus4",null,null));
-            leftoverCards.add(new ChangeColorCard("change color",null,null));
-            leftoverCards.add(new ChangeColorCard("change color",null,null));
+            leftoverCards.add(new Plus4Card("plus4","power",null,null));
+            leftoverCards.add(new Plus4Card("plus4","power",null,null));
+            leftoverCards.add(new ChangeColorCard("change color","power",null,null));
+            leftoverCards.add(new ChangeColorCard("change color","power",null,null));
         }
         Collections.shuffle(leftoverCards);
     }
@@ -88,7 +101,12 @@ public class Game {
     }
 
     private void placeCard(int player, int choice){
-        if (players.get(player).getPlayerCards().get(choice).canBePlacedOn(usedCards.getLast())) {
+        Card c=players.get(player).getPlayerCards().get(choice);
+        if (c.canBePlacedOn(usedCards.getLast())) {
+            if (Objects.equals(c.getType(), "power")){
+                PowerCard c2=(PowerCard)c;
+                c2.usePower(this);
+            }
             usedCards.add(players.get(player).playCard(choice));
         }else{
             System.out.println("You can't play that card");
@@ -110,23 +128,25 @@ public class Game {
         }else {
             placeCard(0, choice - 1);
         }
-        for (int i=1; i<players.size();i++) {
+        currentPlayer++;
+        for (;this.currentPlayer < players.size();currentPlayer++) {
             boolean placedCard = false;
-            for (int j = 0; j < players.get(i).getPlayerCards().size(); j++) {
-                if (players.get(i).getPlayerCards().get(j).canBePlacedOn(usedCards.getLast())) {
-                    placeCard(i, j);
+            for (int i=0;i < players.get(currentPlayer).getPlayerCards().size(); i++) {
+                if (players.get(currentPlayer).getPlayerCards().get(i).canBePlacedOn(usedCards.getLast())) {
+                    placeCard(this.currentPlayer,i);
                     placedCard = true;
                     break;
                 }
             }
             if (!placedCard) {
-                players.get(i).getPlayerCards().add(takeCard());
+                players.get(currentPlayer).getPlayerCards().add(takeCard());
             }
-            if (players.get(i).getPlayerCards().isEmpty()) {
-                return i;
+            if (players.get(currentPlayer).getPlayerCards().isEmpty()) {
+                return currentPlayer;
             }
-            System.out.println("player has "+players.get(i).getPlayerCards().size()+" cards left");
+            System.out.println("player "+currentPlayer+" has "+players.get(currentPlayer).getPlayerCards().size()+" cards left");
         }
+        this.currentPlayer=0;
         return null;
     }
 
