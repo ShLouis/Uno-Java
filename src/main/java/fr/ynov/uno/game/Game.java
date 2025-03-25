@@ -1,6 +1,7 @@
 package fr.ynov.uno.game;
 
 import fr.ynov.uno.game.card.*;
+import fr.ynov.uno.game.gui.Gui;
 import fr.ynov.uno.game.player.Player;
 
 import java.awt.*;
@@ -15,6 +16,8 @@ public class Game {
     private final List<Color> colors;
     private int currentPlayer;
     private List<String> colorNames;
+    private Gui gui;
+    private int choice;
 
     public Game() {
         this.colors=new ArrayList<>();
@@ -32,6 +35,8 @@ public class Game {
         colorNames.add("BLUE");
         colorNames.add("GREEN");
         colorNames.add("YELLOW");
+        this.gui =new Gui(this);
+        choice=-1;
     }
 
     public void setDirection(int d) {
@@ -44,13 +49,28 @@ public class Game {
     public List<Player> getPlayers() {
         return players;
     }
+    public List<String> getColorNames() {
+        return colorNames;
+    }
 
     public List<Color> getColors() {
         return colors;
     }
 
+    public void setChoice(int choice) {
+        this.choice = choice;
+    }
+
     public int getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public int getChoice() {
+        return choice;
+    }
+
+    public Gui getGui() {
+        return gui;
     }
 
     public List<Card> getLeftoverCards() {
@@ -75,8 +95,8 @@ public class Game {
             }
             leftoverCards.add(new Plus4Card("plus4","power",null,null));
             leftoverCards.add(new Plus4Card("plus4","power",null,null));
-            leftoverCards.add(new ChangeColorCard("change color","power",null,null));
-            leftoverCards.add(new ChangeColorCard("change color","power",null,null));
+            leftoverCards.add(new ChangeColorCard("change-color","power",null,null));
+            leftoverCards.add(new ChangeColorCard("change-color","power",null,null));
         }
         Collections.shuffle(leftoverCards);
     }
@@ -109,20 +129,26 @@ public class Game {
             }
             usedCards.add(players.get(player).playCard(choice));
         }else{
-            System.out.println("You can't play that card");
+            currentPlayer=0;
+            this.choice=-1;
             round();
         }
     }
 
+    private void getPlayerChoice(){
+        gui.addPlayerCards(this);
+        while (choice<0) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private Integer round(){
-        System.out.print("Top Card:");
-        usedCards.getLast().show();
-        System.out.println("used cards:"+usedCards.size());
-        System.out.println("0: Pickup");
-        players.getFirst().showCards();
-        Scanner sc=new Scanner(System.in);
-        System.out.println("Which Card would you like to play");
-        int choice=sc.nextInt();
+        gui.addCentreCards(this);
+        getPlayerChoice();
         if (choice==0){
             getPlayers().getFirst().getPlayerCards().add(takeCard());
         }else {
@@ -147,6 +173,7 @@ public class Game {
             System.out.println("player "+currentPlayer+" has "+players.get(currentPlayer).getPlayerCards().size()+" cards left");
         }
         this.currentPlayer=0;
+        choice=-1;
         return null;
     }
 

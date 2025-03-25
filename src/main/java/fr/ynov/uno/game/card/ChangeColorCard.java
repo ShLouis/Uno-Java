@@ -16,12 +16,14 @@ public class ChangeColorCard extends PowerCard{
     public void usePower(Game game) {
         System.out.println("player" +game.getCurrentPlayer()+"used a change color card");
         if (game.getCurrentPlayer()==0) {
-            System.out.println("Pick a color");
-            System.out.println("1: RED\n2: BLUE\n3: GREEN\n4: YELLOW");
-            Scanner sc = new Scanner(System.in);
-            int choice = sc.nextInt();
-            this.color = game.getColors().get(choice - 1);
-            System.out.println("the color has changed to " + game.getColors().get(choice - 1));
+            game.getGui().chooseColor(game);
+            while (this.color==null) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }else{
             for(Card c:game.getPlayers().get(game.getCurrentPlayer()).getPlayerCards()){
                 if(c.getColor() != null){

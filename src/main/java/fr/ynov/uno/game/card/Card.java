@@ -19,6 +19,11 @@ public abstract class Card {
     public Color getColor() {
         return color;
     }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     public Integer getNumber() {
         return number;
     }

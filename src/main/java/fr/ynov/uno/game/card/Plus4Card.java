@@ -16,18 +16,20 @@ public class Plus4Card extends PowerCard{
         System.out.println("player" +game.getCurrentPlayer()+"used a plus 4 card");
         int next=1;
         if (game.getCurrentPlayer()==game.getPlayers().size()-1){
-            next=-game.getPlayers().size()-1;
+            next=0;
         }
         for (int i=0;i<4;i++) {
             game.getPlayers().get(game.getCurrentPlayer()+next).getPlayerCards().add(game.takeCard());
         }
         if (game.getCurrentPlayer()==0) {
-            System.out.println("Pick a color");
-            System.out.println("1: RED\n2: BLUE\n3: GREEN\n4: YELLOW");
-            Scanner sc = new Scanner(System.in);
-            int choice = sc.nextInt();
-            this.color = game.getColors().get(choice - 1);
-            System.out.println("the color has changed to " + game.getColors().get(choice - 1));
+            game.getGui().chooseColor(game);
+            while (this.color==null) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }else{
             for(Card c:game.getPlayers().get(game.getCurrentPlayer()).getPlayerCards()){
                 if(c.getColor() != null){
