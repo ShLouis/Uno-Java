@@ -30,6 +30,12 @@ public class Plus4Card extends PowerCard{
                     e.printStackTrace();
                 }
             }
+            for (int i=0;i<4;i++) {
+                if (game.getColors().get(i) == this.color){
+                    this.name=this.name+game.getColorNames().get(i);
+                    break;
+                }
+            }
         }else{
             for(Card c:game.getPlayers().get(game.getCurrentPlayer()).getPlayerCards()){
                 if(c.getColor() != null){
