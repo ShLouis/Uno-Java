@@ -3,26 +3,49 @@ package fr.ynov.uno.game.gui;
 import fr.ynov.uno.game.Game;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Gui extends JFrame{
 
     private JPanel playerCards;
     private JPanel centreCards;
+    private JPanel topPlayerCards;
+    private JPanel rightPlayerCards;
+    private JPanel leftPlayerCards;
+
 
     public Gui(Game game){
         JFrame frame = new JFrame("Uno Without Friends!");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        frame.setSize(1600,900);
-        Image icon = Toolkit.getDefaultToolkit().getImage("C:\\Users\\louis\\Desktop\\Ynov\\java\\Uno-Java\\src\\main\\java\\fr\\ynov\\uno\\resources\\uno_logo.png");
+        frame.setSize(1920,1080);
+        Image icon = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\fr\\ynov\\uno\\resources\\uno_logo.png");
         frame.setIconImage(icon);
 
         playerCards= new JPanel();
         playerCards.setPreferredSize(new Dimension(200, 300));
         frame.add(playerCards, BorderLayout.SOUTH);
 
-        centreCards=new JPanel();
+        topPlayerCards= new JPanel();
+        playerCards.setPreferredSize(new Dimension(200, 300));
+        frame.add(topPlayerCards, BorderLayout.NORTH);
+
+        rightPlayerCards= new JPanel();
+        rightPlayerCards.setLayout(new BoxLayout(rightPlayerCards, BoxLayout.Y_AXIS));
+        rightPlayerCards.setPreferredSize(new Dimension(300, 1000));
+        frame.add(rightPlayerCards, BorderLayout.EAST);
+
+        leftPlayerCards= new JPanel();
+        leftPlayerCards.setLayout(new BoxLayout(leftPlayerCards, BoxLayout.Y_AXIS));
+        leftPlayerCards.setPreferredSize(new Dimension(300, 1000));
+        frame.add(leftPlayerCards, BorderLayout.WEST);
+
+        centreCards=new JPanel(new FlowLayout());
         frame.add(centreCards, BorderLayout.CENTER);
+
 
         frame.pack();
         frame.setVisible(true);
@@ -30,30 +53,82 @@ public class Gui extends JFrame{
 
     public void addPlayerCards(Game game){
         playerCards.removeAll();
-        for (int i = 0; i < game.getPlayers().getFirst().getPlayerCards().size(); i++) {
-            ImageIcon cardImage = new ImageIcon("C:\\Users\\louis\\Desktop\\Ynov\\java\\Uno-Java\\src\\main\\java\\fr\\ynov\\uno\\resources\\"+game.getPlayers().getFirst().getPlayerCards().get(i).getName()+".png");
-            JButton card = new JButton(cardImage);
-            card.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            card.setOpaque(false);
-            card.setBorder(null);
-            card.setContentAreaFilled(false);
-            card.setFocusPainted(false);
-            final int index = i+1;
-            card.addActionListener(e -> {
-                game.setChoice(index);
-
-            });
-            playerCards.add(card);
+        if(!game.getPlayers().getFirst().getPlayerCards().isEmpty()) {
+            for (int i = 0; i < game.getPlayers().getFirst().getPlayerCards().size(); i++) {
+                ImageIcon cardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\" + game.getPlayers().getFirst().getPlayerCards().get(i).getName() + ".png");
+                JButton card = newCardButton(cardImage);
+                addHoverBorder(card,game.getPlayers().getFirst().getPlayerCards().get(i).getColor());
+                int finalI = i;
+                card.addActionListener(e -> {
+                    game.setChoice(finalI +1);
+                });
+                playerCards.add(card);
+            }
+        }else {
+            ImageIcon winner = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\winner.png");
+            JLabel label = new JLabel(winner);
+            playerCards.add(label);
         }
         playerCards.revalidate();
         playerCards.repaint();
     }
 
+    public void addOtherPlayerCards(Game game){
+        topPlayerCards.removeAll();
+        leftPlayerCards.removeAll();
+        rightPlayerCards.removeAll();
+        if(!game.getPlayers().get(2).getPlayerCards().isEmpty()) {
+            ImageIcon topCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\back-upside-down.png");
+            for (int i = 0; i < game.getPlayers().get(2).getPlayerCards().size(); i++) {
+                JLabel topCardLabel = new JLabel(topCardImage);
+                topPlayerCards.add(topCardLabel);
+            }
+        }else {
+            ImageIcon winner = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\winner.png");
+            JLabel label = new JLabel(winner);
+            topPlayerCards.add(label);
+        }
+
+        if(!game.getPlayers().get(1).getPlayerCards().isEmpty()) {
+            ImageIcon rightCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\back-right.png");
+            for (int i = 0; i < game.getPlayers().get(1).getPlayerCards().size(); i++) {
+                JLabel rightCardLabel = new JLabel(rightCardImage);
+                rightPlayerCards.add(rightCardLabel);
+            }
+        }else {
+            ImageIcon winner = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\winner.png");
+            JLabel label = new JLabel(winner);
+
+            rightPlayerCards.add(label);
+        }
+
+        if(!game.getPlayers().get(3).getPlayerCards().isEmpty()) {
+            ImageIcon leftCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\back-left.png");
+            for (int i = 0; i < game.getPlayers().get(3).getPlayerCards().size(); i++) {
+                JLabel leftCardLabel = new JLabel(leftCardImage);
+                leftPlayerCards.add(leftCardLabel);
+            }
+        }
+        else {
+            ImageIcon winner = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\winner.png");
+            JLabel label = new JLabel(winner);
+            leftPlayerCards.add(label);
+        }
+        topPlayerCards.revalidate();
+        topPlayerCards.repaint();
+        leftPlayerCards.revalidate();
+        leftPlayerCards.repaint();
+        rightPlayerCards.revalidate();
+        rightPlayerCards.repaint();
+    }
+
     public void chooseColor(Game game){
         playerCards.removeAll();
         for (int i = 0; i < game.getColors().size(); i++) {
-            JButton card = new JButton(game.getColorNames().get(i));
+            ImageIcon cardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\change-color"+game.getColorNames().get(i)+".png");
+            JButton card = newCardButton(cardImage);
             final Color color = game.getColors().get(i);
+            addHoverBorder(card,color);
             card.addActionListener(e -> {
                 game.getPlayers().get(game.getCurrentPlayer()).getPlayerCards().get(game.getChoice()-1).setColor(color);
             });
@@ -63,20 +138,24 @@ public class Gui extends JFrame{
         playerCards.repaint();
     }
 
+    private JButton newCardButton(ImageIcon image){
+        JButton card = new JButton(image);
+        card.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        card.setOpaque(false);
+        card.setBorder(null);
+        card.setContentAreaFilled(false);
+        card.setFocusPainted(false);
+        addHoverBorder(card,null);
+        return card;
+    }
+
     public void addCentreCards(Game game){
         centreCards.removeAll();
-
-        ImageIcon topCard = new ImageIcon("C:\\Users\\louis\\Desktop\\Ynov\\java\\Uno-Java\\src\\main\\java\\fr\\ynov\\uno\\resources\\"+game.getUsedCards().getLast().getName()+".png");
+        ImageIcon topCard = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\"+game.getUsedCards().getLast().getName()+".png");
         JLabel topCardLabel = new JLabel(topCard);
         centreCards.add(topCardLabel);
-
-        ImageIcon basicCard = new ImageIcon("C:\\Users\\louis\\Desktop\\Ynov\\java\\Uno-Java\\src\\main\\java\\fr\\ynov\\uno\\resources\\back.png");
-        JButton pickupCard = new JButton(basicCard);
-        pickupCard.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        pickupCard.setOpaque(false);
-        pickupCard.setBorder(null);
-        pickupCard.setContentAreaFilled(false);
-        pickupCard.setFocusPainted(false);
+        ImageIcon basicCard = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\back.png");
+        JButton pickupCard=newCardButton(basicCard);
         pickupCard.addActionListener(e -> {
             game.setChoice(0);
         });
@@ -86,5 +165,21 @@ public class Gui extends JFrame{
         centreCards.repaint();
     }
 
+
+    private void addHoverBorder(JButton card ,Color color){
+        Border hoverBorder = BorderFactory.createLineBorder(color, 2,true);
+        card.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                card.setBorder(hoverBorder);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                card.setBorder(null);
+            }
+        });
+
+    }
 
 }

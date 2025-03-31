@@ -28,6 +28,13 @@ public class ChangeColorCard extends PowerCard{
             for(Card c:game.getPlayers().get(game.getCurrentPlayer()).getPlayerCards()){
                 if(c.getColor() != null){
                     this.color = c.getColor();
+                    for (int i=0;i<4;i++) {
+                        if (game.getColors().get(i) == this.color){
+                            this.name=this.name+game.getColorNames().get(i);
+                            break;
+                        }
+                    }
+                    break;
                 }
             }
             System.out.println("the color has changed to " + this.color);

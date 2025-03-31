@@ -18,6 +18,7 @@ public class Game {
     private List<String> colorNames;
     private Gui gui;
     private int choice;
+    private Integer winner;
 
     public Game() {
         this.colors=new ArrayList<>();
@@ -51,6 +52,10 @@ public class Game {
     }
     public List<String> getColorNames() {
         return colorNames;
+    }
+
+    public void setCurrentPlayer(int currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
     public List<Color> getColors() {
@@ -111,7 +116,9 @@ public class Game {
     }
 
     private void dealCards(){
-        this.usedCards.add(takeCard());
+        do {
+            this.usedCards.add(takeCard());
+        } while (!Objects.equals(usedCards.getLast().getType(), "regular"));
         for (int i=0; i<4; i++) {
             this.players.add(new Player());
             for (int j=0; j<7; j++) {
@@ -129,14 +136,13 @@ public class Game {
             }
             usedCards.add(players.get(player).playCard(choice));
         }else{
-            currentPlayer=0;
             this.choice=-1;
             round();
         }
     }
 
     private void getPlayerChoice(){
-        gui.addPlayerCards(this);
+
         while (choice<0) {
             try {
                 Thread.sleep(100);
@@ -147,33 +153,45 @@ public class Game {
     }
 
     private Integer round(){
-        gui.addCentreCards(this);
         getPlayerChoice();
         if (choice==0){
             getPlayers().getFirst().getPlayerCards().add(takeCard());
         }else {
             placeCard(0, choice - 1);
         }
+        if (players.getFirst().getPlayerCards().isEmpty()){
+            return 0;
+        }
+        gui.addPlayerCards(this);
+        gui.addCentreCards(this);
         currentPlayer++;
-        for (;this.currentPlayer < players.size();currentPlayer++) {
+        for (int p=this.currentPlayer;p < players.size();currentPlayer++,p++) {
             boolean placedCard = false;
-            for (int i=0;i < players.get(currentPlayer).getPlayerCards().size(); i++) {
-                if (players.get(currentPlayer).getPlayerCards().get(i).canBePlacedOn(usedCards.getLast())) {
-                    placeCard(this.currentPlayer,i);
+            for (int i=0;i < players.get(p).getPlayerCards().size(); i++) {
+                if (players.get(p).getPlayerCards().get(i).canBePlacedOn(usedCards.getLast())) {
+                    placeCard(p,i);
                     placedCard = true;
                     break;
                 }
             }
             if (!placedCard) {
-                players.get(currentPlayer).getPlayerCards().add(takeCard());
+                players.get(p).getPlayerCards().add(takeCard());
             }
-            if (players.get(currentPlayer).getPlayerCards().isEmpty()) {
-                return currentPlayer;
+            if (players.get(p).getPlayerCards().isEmpty()) {
+                return p;
             }
-            System.out.println("player "+currentPlayer+" has "+players.get(currentPlayer).getPlayerCards().size()+" cards left");
+            System.out.println("player "+p+" has "+players.get(p).getPlayerCards().size()+" cards left");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            gui.addOtherPlayerCards(this);
+            gui.addCentreCards(this);
         }
+        gui.addPlayerCards(this);
         this.currentPlayer=0;
-        choice=-1;
+        choice= -1;
         return null;
     }
 
@@ -182,10 +200,17 @@ public class Game {
     public void startGame() {
         setupCards();
         dealCards();
-        Integer winner=round();
-        while (winner == null) {
+        gui.addCentreCards(this);
+        gui.addOtherPlayerCards(this);
+        gui.addPlayerCards(this);
+        do {
             winner = round();
-        }
+        } while (winner == null);
+        gui.addPlayerCards(this);
+        gui.addCentreCards(this);
+        gui.addOtherPlayerCards(this);
         System.out.println("The Winner is player "+winner);
-    }
+        Scanner sc = new Scanner(System.in);
+        int playAgain=sc.nextInt();
+        }
 }

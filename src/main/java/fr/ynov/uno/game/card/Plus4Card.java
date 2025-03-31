@@ -14,12 +14,12 @@ public class Plus4Card extends PowerCard{
     @Override
     public void usePower(Game game) {
         System.out.println("player" +game.getCurrentPlayer()+"used a plus 4 card");
-        int next=1;
-        if (game.getCurrentPlayer()==game.getPlayers().size()-1){
+        int next=game.getCurrentPlayer()+1;
+        if (game.getCurrentPlayer()>=game.getPlayers().size()-1){
             next=0;
         }
         for (int i=0;i<4;i++) {
-            game.getPlayers().get(game.getCurrentPlayer()+next).getPlayerCards().add(game.takeCard());
+            game.getPlayers().get(next).getPlayerCards().add(game.takeCard());
         }
         if (game.getCurrentPlayer()==0) {
             game.getGui().chooseColor(game);
@@ -34,6 +34,13 @@ public class Plus4Card extends PowerCard{
             for(Card c:game.getPlayers().get(game.getCurrentPlayer()).getPlayerCards()){
                 if(c.getColor() != null){
                     this.color = c.getColor();
+                    for (int i=0;i<4;i++) {
+                        if (game.getColors().get(i) == this.color){
+                            this.name=this.name+game.getColorNames().get(i);
+                            break;
+                        }
+                    }
+                    break;
                 }
             }
             System.out.println("the color has changed to " + this.color);

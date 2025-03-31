@@ -24,6 +24,10 @@ public abstract class Card {
         this.color = color;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Integer getNumber() {
         return number;
     }
