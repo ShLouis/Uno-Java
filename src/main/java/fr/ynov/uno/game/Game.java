@@ -210,7 +210,5 @@ public class Game {
         gui.addCentreCards(this);
         gui.addOtherPlayerCards(this);
         System.out.println("The Winner is player "+winner);
-        Scanner sc = new Scanner(System.in);
-        int playAgain=sc.nextInt();
         }
 }

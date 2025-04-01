@@ -15,6 +15,7 @@ public class Gui extends JFrame{
     private JPanel topPlayerCards;
     private JPanel rightPlayerCards;
     private JPanel leftPlayerCards;
+    private JPanel centre;
 
 
     public Gui(Game game){
@@ -30,23 +31,23 @@ public class Gui extends JFrame{
         frame.add(playerCards, BorderLayout.SOUTH);
 
         topPlayerCards= new JPanel();
-        playerCards.setPreferredSize(new Dimension(200, 300));
+        topPlayerCards.setPreferredSize(new Dimension(200, 300));
         frame.add(topPlayerCards, BorderLayout.NORTH);
 
         rightPlayerCards= new JPanel();
-        rightPlayerCards.setLayout(new BoxLayout(rightPlayerCards, BoxLayout.Y_AXIS));
         rightPlayerCards.setPreferredSize(new Dimension(300, 1000));
         frame.add(rightPlayerCards, BorderLayout.EAST);
 
         leftPlayerCards= new JPanel();
-        leftPlayerCards.setLayout(new BoxLayout(leftPlayerCards, BoxLayout.Y_AXIS));
         leftPlayerCards.setPreferredSize(new Dimension(300, 1000));
         frame.add(leftPlayerCards, BorderLayout.WEST);
-
+        centre=new JPanel();
+        centre.setLayout(new BoxLayout(centre,BoxLayout.Y_AXIS));
+        frame.add(centre, BorderLayout.CENTER);
+        centre.add(new JLabel("\n"));
+        centre.add(new JLabel("\n"));
         centreCards=new JPanel(new FlowLayout());
-        frame.add(centreCards, BorderLayout.CENTER);
-
-
+        centre.add(centreCards, BorderLayout.CENTER);
         frame.pack();
         frame.setVisible(true);
     }
@@ -78,11 +79,15 @@ public class Gui extends JFrame{
         leftPlayerCards.removeAll();
         rightPlayerCards.removeAll();
         if(!game.getPlayers().get(2).getPlayerCards().isEmpty()) {
-            ImageIcon topCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\back-upside-down.png");
-            for (int i = 0; i < game.getPlayers().get(2).getPlayerCards().size(); i++) {
-                JLabel topCardLabel = new JLabel(topCardImage);
-                topPlayerCards.add(topCardLabel);
+            ImageIcon topCardImage;
+            if(game.getPlayers().get(2).getPlayerCards().size()>=9){
+                topCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\9top.png");
+            }else {
+                topCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\" + game.getPlayers().get(1).getPlayerCards().size() + "top.png");
             }
+            JLabel topCardLabel = new JLabel(topCardImage);
+            topPlayerCards.add(topCardLabel);
+
         }else {
             ImageIcon winner = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\winner.png");
             JLabel label = new JLabel(winner);
@@ -90,11 +95,14 @@ public class Gui extends JFrame{
         }
 
         if(!game.getPlayers().get(1).getPlayerCards().isEmpty()) {
-            ImageIcon rightCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\back-right.png");
-            for (int i = 0; i < game.getPlayers().get(1).getPlayerCards().size(); i++) {
-                JLabel rightCardLabel = new JLabel(rightCardImage);
-                rightPlayerCards.add(rightCardLabel);
+            ImageIcon rightCardImage;
+            if(game.getPlayers().get(1).getPlayerCards().size()>=9){
+                rightCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\9right.png");
+            }else {
+                rightCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\" + game.getPlayers().get(1).getPlayerCards().size() + "right.png");
             }
+            JLabel rightCardLabel = new JLabel(rightCardImage);
+                rightPlayerCards.add(rightCardLabel);
         }else {
             ImageIcon winner = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\winner.png");
             JLabel label = new JLabel(winner);
@@ -103,12 +111,15 @@ public class Gui extends JFrame{
         }
 
         if(!game.getPlayers().get(3).getPlayerCards().isEmpty()) {
-            ImageIcon leftCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\back-left.png");
-            for (int i = 0; i < game.getPlayers().get(3).getPlayerCards().size(); i++) {
-                JLabel leftCardLabel = new JLabel(leftCardImage);
+            ImageIcon leftCardImage;
+            if(game.getPlayers().get(3).getPlayerCards().size()>=9){
+                leftCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\9left.png");
+            }else {
+                leftCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\" + game.getPlayers().get(3).getPlayerCards().size() + "left.png");
+            }
+            JLabel leftCardLabel = new JLabel(leftCardImage);
                 leftPlayerCards.add(leftCardLabel);
             }
-        }
         else {
             ImageIcon winner = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\winner.png");
             JLabel label = new JLabel(winner);
@@ -151,6 +162,8 @@ public class Gui extends JFrame{
 
     public void addCentreCards(Game game){
         centreCards.removeAll();
+        centre.removeAll();
+        centre.add(centreCards);
         ImageIcon topCard = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\"+game.getUsedCards().getLast().getName()+".png");
         JLabel topCardLabel = new JLabel(topCard);
         centreCards.add(topCardLabel);
@@ -163,6 +176,12 @@ public class Gui extends JFrame{
 
         centreCards.revalidate();
         centreCards.repaint();
+
+        if (game.getCurrentPlayer()==3) {
+            centre.add(new JLabel("Your Turn"));
+        }
+        centre.revalidate();
+        centre.repaint();
     }
 
 
