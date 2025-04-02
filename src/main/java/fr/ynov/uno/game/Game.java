@@ -20,7 +20,6 @@ public class Game {
     private Gui gui;
     private int choice;
     private Integer winner;
-    private boolean playAgain;
 
     public Game() {
         this.colors=new ArrayList<>();
@@ -40,19 +39,8 @@ public class Game {
         colorNames.add("YELLOW");
         this.gui =new Gui();
         choice=-1;
-        playAgain=true;
     }
 
-    public void setPlayAgain(boolean playAgain) {
-        this.playAgain = playAgain;
-    }
-
-    public void setUsedCards(List<Card> usedCards) {
-        this.usedCards = usedCards;
-    }
-    public void setLeftoverCards(List<Card> leftoverCards) {
-        this.leftoverCards = leftoverCards;
-    }
     public void setDirection(int d) {
         direction = d;
     }
@@ -92,10 +80,6 @@ public class Game {
         return gui;
     }
 
-    public List<Card> getLeftoverCards() {
-        return leftoverCards;
-    }
-
     public List<Card> getUsedCards(){
         return usedCards;
     }
@@ -108,9 +92,9 @@ public class Game {
                 }
             }
             for(int l = 0; l<4; l++){
-                leftoverCards.add(new SkipCard(colorNames.get(l)+"skip","power",colors.get(l),null));
-                leftoverCards.add(new ReverseCard(colorNames.get(l)+"reverse","power",colors.get(l),null));
-                leftoverCards.add(new Plus2Card(colorNames.get(l)+"plus2","power",colors.get(l),null));
+                leftoverCards.add(new SkipCard(colorNames.get(l)+"skip","power",colors.get(l),-1));
+                leftoverCards.add(new ReverseCard(colorNames.get(l)+"reverse","power",colors.get(l),-2));
+                leftoverCards.add(new Plus2Card(colorNames.get(l)+"plus2","power",colors.get(l),-3));
             }
             leftoverCards.add(new Plus4Card("plus4","power",null,null));
             leftoverCards.add(new Plus4Card("plus4","power",null,null));
@@ -180,7 +164,7 @@ public class Game {
         gui.addPlayerCards(this);
         gui.addCentreCards(this);
         currentPlayer++;
-        for (int p=this.currentPlayer;p < players.size();currentPlayer++,p++) {
+        for (int p=this.currentPlayer;p < players.size();currentPlayer++,p=currentPlayer) {
             boolean placedCard = false;
             for (int i=0;i < players.get(p).getPlayerCards().size(); i++) {
                 if (players.get(p).getPlayerCards().get(i).canBePlacedOn(usedCards.getLast())) {
@@ -203,6 +187,7 @@ public class Game {
             }
             gui.addOtherPlayerCards(this);
             gui.addCentreCards(this);
+            if (currentPlayer==0){break;}
         }
         gui.addPlayerCards(this);
         choice= -1;
@@ -220,7 +205,6 @@ public class Game {
                 gui.addPlayerCards(this);
                 System.out.println("game started");
                 do {
-                    System.out.println("test");
                     winner = round();
                 } while (winner == null);
                 gui.addPlayerCards(this);
