@@ -48,6 +48,7 @@ public class Gui extends JFrame{
         centre.add(new JLabel("\n"));
         centreCards=new JPanel(new FlowLayout());
         centre.add(centreCards, BorderLayout.CENTER);
+        centre.add(new JLabel("Your Turn"));
         frame.pack();
         frame.setVisible(true);
     }
@@ -176,15 +177,9 @@ public class Gui extends JFrame{
 
         centreCards.revalidate();
         centreCards.repaint();
-
-        if (game.getCurrentPlayer()==3) {
-            centre.add(new JLabel("Your Turn"));
-        }
         centre.revalidate();
         centre.repaint();
     }
-
-
     private void addHoverBorder(JButton card ,Color color){
         Border hoverBorder = BorderFactory.createLineBorder(color, 2,true);
         card.addMouseListener(new MouseAdapter() {
@@ -201,4 +196,20 @@ public class Gui extends JFrame{
 
     }
 
+    public void addTurn(){
+        centre.add(new JLabel("Your Turn"));
+    }
+
+    public void playAgainButton(){
+        centre.removeAll();
+        ImageIcon retry =new ImageIcon("retry.png");
+        JButton retryButton=newCardButton(retry);
+        retryButton.addActionListener(e -> {
+
+        });
+        centre.add(retryButton);
+        centre.revalidate();
+        centre.repaint();
+
+    }
 }
