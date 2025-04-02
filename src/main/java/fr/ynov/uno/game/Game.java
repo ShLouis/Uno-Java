@@ -4,6 +4,7 @@ import fr.ynov.uno.game.card.*;
 import fr.ynov.uno.game.gui.Gui;
 import fr.ynov.uno.game.player.Player;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -19,6 +20,7 @@ public class Game {
     private Gui gui;
     private int choice;
     private Integer winner;
+    private boolean playAgain;
 
     public Game() {
         this.colors=new ArrayList<>();
@@ -36,10 +38,21 @@ public class Game {
         colorNames.add("BLUE");
         colorNames.add("GREEN");
         colorNames.add("YELLOW");
-        this.gui =new Gui(this);
+        this.gui =new Gui();
         choice=-1;
+        playAgain=true;
     }
 
+    public void setPlayAgain(boolean playAgain) {
+        this.playAgain = playAgain;
+    }
+
+    public void setUsedCards(List<Card> usedCards) {
+        this.usedCards = usedCards;
+    }
+    public void setLeftoverCards(List<Card> leftoverCards) {
+        this.leftoverCards = leftoverCards;
+    }
     public void setDirection(int d) {
         direction = d;
     }
@@ -57,6 +70,7 @@ public class Game {
     public void setCurrentPlayer(int currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
+
 
     public List<Color> getColors() {
         return colors;
@@ -142,7 +156,7 @@ public class Game {
     }
 
     private void getPlayerChoice(){
-
+        gui.addTurn();
         while (choice<0) {
             try {
                 Thread.sleep(100);
@@ -153,6 +167,7 @@ public class Game {
     }
 
     private Integer round(){
+        this.currentPlayer=0;
         getPlayerChoice();
         if (choice==0){
             getPlayers().getFirst().getPlayerCards().add(takeCard());
@@ -190,7 +205,6 @@ public class Game {
             gui.addCentreCards(this);
         }
         gui.addPlayerCards(this);
-        this.currentPlayer=0;
         choice= -1;
         return null;
     }
@@ -198,17 +212,37 @@ public class Game {
 
 
     public void startGame() {
-        setupCards();
-        dealCards();
-        gui.addCentreCards(this);
-        gui.addOtherPlayerCards(this);
-        gui.addPlayerCards(this);
-        do {
-            winner = round();
-        } while (winner == null);
-        gui.addPlayerCards(this);
-        gui.addCentreCards(this);
-        gui.addOtherPlayerCards(this);
-        System.out.println("The Winner is player "+winner);
+        while (true) {
+                setupCards();
+                dealCards();
+                gui.addCentreCards(this);
+                gui.addOtherPlayerCards(this);
+                gui.addPlayerCards(this);
+                System.out.println("game started");
+                do {
+                    System.out.println("test");
+                    winner = round();
+                } while (winner == null);
+                gui.addPlayerCards(this);
+                gui.addCentreCards(this);
+                gui.addOtherPlayerCards(this);
+                System.out.println("The Winner is player " + winner);
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+                playAgain();
         }
+    }
+
+    public void playAgain(){
+        this.usedCards=new ArrayList<>();
+        this.leftoverCards= new ArrayList<>();
+        this.players= new ArrayList<>();
+        direction=1;
+        this.currentPlayer=0;
+        choice=-1;
+        this.winner=null;
+    }
 }

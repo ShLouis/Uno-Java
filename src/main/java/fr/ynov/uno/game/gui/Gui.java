@@ -7,6 +7,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class Gui extends JFrame{
 
@@ -16,13 +17,24 @@ public class Gui extends JFrame{
     private JPanel rightPlayerCards;
     private JPanel leftPlayerCards;
     private JPanel centre;
+    private JFrame frame;
 
 
-    public Gui(Game game){
-        JFrame frame = new JFrame("Uno Without Friends!");
+    public void reset() {
+        centreCards.removeAll();
+        playerCards.removeAll();
+        rightPlayerCards.removeAll();
+        topPlayerCards.removeAll();
+        leftPlayerCards.removeAll();
+        revalidate();
+        repaint();
+    }
+
+    public Gui(){
+        frame = new JFrame("Uno Without Friends!");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        frame.setSize(1920,1080);
+        frame.setSize(1600,180);
         Image icon = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\fr\\ynov\\uno\\resources\\uno_logo.png");
         frame.setIconImage(icon);
 
@@ -84,7 +96,7 @@ public class Gui extends JFrame{
             if(game.getPlayers().get(2).getPlayerCards().size()>=9){
                 topCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\9top.png");
             }else {
-                topCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\" + game.getPlayers().get(1).getPlayerCards().size() + "top.png");
+                topCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\" + game.getPlayers().get(2).getPlayerCards().size() + "top.png");
             }
             JLabel topCardLabel = new JLabel(topCardImage);
             topPlayerCards.add(topCardLabel);
@@ -198,18 +210,5 @@ public class Gui extends JFrame{
 
     public void addTurn(){
         centre.add(new JLabel("Your Turn"));
-    }
-
-    public void playAgainButton(){
-        centre.removeAll();
-        ImageIcon retry =new ImageIcon("retry.png");
-        JButton retryButton=newCardButton(retry);
-        retryButton.addActionListener(e -> {
-
-        });
-        centre.add(retryButton);
-        centre.revalidate();
-        centre.repaint();
-
     }
 }
