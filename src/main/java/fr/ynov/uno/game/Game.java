@@ -8,18 +8,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-
+/** Game Class
+ * This class represents the Game, it contains the players and determines game logic
+ * */
 public class Game {
     private List<Player> players;
     private List<Card> usedCards;
     private List<Card> leftoverCards;
-    private int direction;
     private final List<Color> colors;
     private int currentPlayer;
     private List<String> colorNames;
     private Gui gui;
     private int choice;
     private Integer winner;
+    private int right;
+    private int left;
 
     public Game() {
         this.colors=new ArrayList<>();
@@ -30,7 +33,6 @@ public class Game {
         this.usedCards= new ArrayList<>();
         this.leftoverCards= new ArrayList<>();
         this.players= new ArrayList<>();
-        direction=1;
         this.currentPlayer=0;
         this.colorNames = new ArrayList<>();
         colorNames.add("RED");
@@ -39,14 +41,30 @@ public class Game {
         colorNames.add("YELLOW");
         this.gui =new Gui();
         choice=-1;
+        right=1;
+        left=3;
     }
 
-    public void setDirection(int d) {
-        direction = d;
+    public int getRight() {
+        return right;
     }
-    public int getDirection() {
-        return direction;
+
+    public int getLeft() {
+        return left;
     }
+
+    public void setRight(int right) {
+        this.right = right;
+    }
+
+    public void setLeft(int left) {
+        this.left = left;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+
 
     public List<Player> getPlayers() {
         return players;
@@ -163,11 +181,14 @@ public class Game {
         }
         gui.addPlayerCards(this);
         gui.addCentreCards(this);
+        gui.addOtherPlayerCards(this);
         currentPlayer++;
         for (int p=this.currentPlayer;p < players.size();currentPlayer++,p=currentPlayer) {
             boolean placedCard = false;
             for (int i=0;i < players.get(p).getPlayerCards().size(); i++) {
                 if (players.get(p).getPlayerCards().get(i).canBePlacedOn(usedCards.getLast())) {
+                    gui.addOtherPlayerCards(this);
+                    gui.addCentreCards(this);
                     placeCard(p,i);
                     placedCard = true;
                     break;
@@ -224,9 +245,10 @@ public class Game {
         this.usedCards=new ArrayList<>();
         this.leftoverCards= new ArrayList<>();
         this.players= new ArrayList<>();
-        direction=1;
         this.currentPlayer=0;
         choice=-1;
         this.winner=null;
+        this.left=3;
+        this.right=1;
     }
 }
