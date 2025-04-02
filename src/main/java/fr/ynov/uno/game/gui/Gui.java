@@ -209,6 +209,15 @@ public class Gui extends JFrame{
     }
 
     public void addTurn(){
-        centre.add(new JLabel("Your Turn"));
+        boolean exists = false;
+        for (Component comp : centre.getComponents()) {
+            if (comp instanceof JLabel) {
+                exists = true;
+                break;
+            }
+        }
+        if (!exists) {
+            centre.add(new JLabel("Your Turn"));
+        }
     }
 }
