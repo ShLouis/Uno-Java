@@ -3,7 +3,9 @@ package fr.ynov.uno.game.card;
 import fr.ynov.uno.game.Game;
 
 import java.awt.*;
-
+/** Plus2Card Class
+ * This class represents the uno card that makes the next player pickup 2 cards
+ * */
 public class Plus2Card extends PowerCard{
     public Plus2Card(String name,String type, Color color, Integer number) {
         super(name,type, color, number);

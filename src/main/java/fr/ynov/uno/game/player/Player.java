@@ -4,7 +4,9 @@ import fr.ynov.uno.game.card.Card;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/** Player Class
+ * This class represent a player, each player has a List of Cards.
+ * */
 public class Player {
     private List<Card> playerCards;
 
@@ -26,8 +28,6 @@ public class Player {
         Card choice=playerCards.get(cardNumber);
         playerCards.remove(cardNumber);
         return choice;
-    }
-    public void pickupCard(){
     }
 
 }

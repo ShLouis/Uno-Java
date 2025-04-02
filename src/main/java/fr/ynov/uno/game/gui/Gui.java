@@ -8,7 +8,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-
+/** Gui Class
+ * This uses classes from swing to create a user-friendly GUI.
+ * */
 public class Gui extends JFrame{
 
     private JPanel playerCards;
@@ -107,12 +109,12 @@ public class Gui extends JFrame{
             topPlayerCards.add(label);
         }
 
-        if(!game.getPlayers().get(1).getPlayerCards().isEmpty()) {
+        if(!game.getPlayers().get(game.getRight()).getPlayerCards().isEmpty()) {
             ImageIcon rightCardImage;
-            if(game.getPlayers().get(1).getPlayerCards().size()>=9){
+            if(game.getPlayers().get(game.getRight()).getPlayerCards().size()>=9){
                 rightCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\9right.png");
             }else {
-                rightCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\" + game.getPlayers().get(1).getPlayerCards().size() + "right.png");
+                rightCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\" + game.getPlayers().get(game.getRight()).getPlayerCards().size() + "right.png");
             }
             JLabel rightCardLabel = new JLabel(rightCardImage);
                 rightPlayerCards.add(rightCardLabel);
@@ -123,12 +125,12 @@ public class Gui extends JFrame{
             rightPlayerCards.add(label);
         }
 
-        if(!game.getPlayers().get(3).getPlayerCards().isEmpty()) {
+        if(!game.getPlayers().get(game.getLeft()).getPlayerCards().isEmpty()) {
             ImageIcon leftCardImage;
-            if(game.getPlayers().get(3).getPlayerCards().size()>=9){
+            if(game.getPlayers().get(game.getLeft()).getPlayerCards().size()>=9){
                 leftCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\9left.png");
             }else {
-                leftCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\" + game.getPlayers().get(3).getPlayerCards().size() + "left.png");
+                leftCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\" + game.getPlayers().get(game.getLeft()).getPlayerCards().size() + "left.png");
             }
             JLabel leftCardLabel = new JLabel(leftCardImage);
                 leftPlayerCards.add(leftCardLabel);

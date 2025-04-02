@@ -5,6 +5,9 @@ import fr.ynov.uno.game.Game;
 import java.awt.*;
 import java.util.Scanner;
 
+/** Plus4Card Class
+ * This class represents the uno card that makes the next player pickup 4 cards
+ * */
 public class Plus4Card extends PowerCard{
 
     public Plus4Card(String name,String type, Color color, Integer number) {

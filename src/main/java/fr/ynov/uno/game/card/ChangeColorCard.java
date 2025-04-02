@@ -5,12 +5,16 @@ import fr.ynov.uno.game.player.Player;
 
 import java.awt.*;
 import java.util.Scanner;
-
+/** ChangeColorCard Class
+ * This class represents the uno card that allow a player to change the color to whatever they want.
+ * */
 public class ChangeColorCard extends PowerCard{
 
     public ChangeColorCard(String name,String type, Color color, Integer number) {
         super(name,type, color, number);
     }
+
+
 
     @Override
     public void usePower(Game game) {

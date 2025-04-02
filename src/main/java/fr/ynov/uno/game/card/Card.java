@@ -2,7 +2,9 @@ package fr.ynov.uno.game.card;
 
 import java.awt.*;
 import java.util.Objects;
-
+/** Card Class
+ * This is an abstract class that represents an uno Card, with a color and a number.
+ * */
 public abstract class Card {
     protected Color color;
     protected Integer number;
@@ -15,21 +17,11 @@ public abstract class Card {
         this.color = color;
         this.number = number;
     }
-
     public Color getColor() {
         return color;
     }
-
     public void setColor(Color color) {
         this.color = color;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getNumber() {
-        return number;
     }
     public String getName() {
         return name;

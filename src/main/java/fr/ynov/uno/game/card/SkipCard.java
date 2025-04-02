@@ -3,7 +3,9 @@ package fr.ynov.uno.game.card;
 import fr.ynov.uno.game.Game;
 
 import java.awt.*;
-
+/** SkipCard Class
+ * This class represents the uno card that skips the next player's turn
+ * */
 public class SkipCard extends PowerCard{
     public SkipCard(String name,String type, Color color, Integer number) {
         super(name,type, color, number);
