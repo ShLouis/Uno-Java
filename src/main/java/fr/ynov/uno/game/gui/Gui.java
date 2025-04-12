@@ -71,7 +71,7 @@ public class Gui extends JFrame{
         playerCards.removeAll();
         if(!game.getPlayers().getFirst().getPlayerCards().isEmpty()) {
             for (int i = 0; i < game.getPlayers().getFirst().getPlayerCards().size(); i++) {
-                ImageIcon cardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\" + game.getPlayers().getFirst().getPlayerCards().get(i).getName() + ".png");
+                ImageIcon cardImage = new ImageIcon("src/main/java/fr/ynov/uno/resources/" + game.getPlayers().getFirst().getPlayerCards().get(i).getName() + ".png");
                 JButton card = newCardButton(cardImage);
                 addHoverBorder(card,game.getPlayers().getFirst().getPlayerCards().get(i).getColor());
                 int finalI = i;
@@ -81,7 +81,7 @@ public class Gui extends JFrame{
                 playerCards.add(card);
             }
         }else {
-            ImageIcon winner = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\winner.png");
+            ImageIcon winner = new ImageIcon("src/main/java/fr/ynov/uno/resources/winner.png");
             JLabel label = new JLabel(winner);
             playerCards.add(label);
         }
@@ -96,15 +96,15 @@ public class Gui extends JFrame{
         if(!game.getPlayers().get(2).getPlayerCards().isEmpty()) {
             ImageIcon topCardImage;
             if(game.getPlayers().get(2).getPlayerCards().size()>=9){
-                topCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\9top.png");
+                topCardImage = new ImageIcon("src/main/java/fr/ynov/uno/resources/9top.png");
             }else {
-                topCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\" + game.getPlayers().get(2).getPlayerCards().size() + "top.png");
+                topCardImage = new ImageIcon("src/main/java/fr/ynov/uno/resources/" + game.getPlayers().get(2).getPlayerCards().size() + "top.png");
             }
             JLabel topCardLabel = new JLabel(topCardImage);
             topPlayerCards.add(topCardLabel);
 
         }else {
-            ImageIcon winner = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\winner.png");
+            ImageIcon winner = new ImageIcon("src/main/java/fr/ynov/uno/resources/winner.png");
             JLabel label = new JLabel(winner);
             topPlayerCards.add(label);
         }
@@ -112,14 +112,14 @@ public class Gui extends JFrame{
         if(!game.getPlayers().get(game.getRight()).getPlayerCards().isEmpty()) {
             ImageIcon rightCardImage;
             if(game.getPlayers().get(game.getRight()).getPlayerCards().size()>=9){
-                rightCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\9right.png");
+                rightCardImage = new ImageIcon("src/main/java/fr/ynov/uno/resources/9right.png");
             }else {
-                rightCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\" + game.getPlayers().get(game.getRight()).getPlayerCards().size() + "right.png");
+                rightCardImage = new ImageIcon("src/main/java/fr/ynov/uno/resources/" + game.getPlayers().get(game.getRight()).getPlayerCards().size() + "right.png");
             }
             JLabel rightCardLabel = new JLabel(rightCardImage);
                 rightPlayerCards.add(rightCardLabel);
         }else {
-            ImageIcon winner = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\winner.png");
+            ImageIcon winner = new ImageIcon("src/main/java/fr/ynov/uno/resources/winner.png");
             JLabel label = new JLabel(winner);
 
             rightPlayerCards.add(label);
@@ -128,15 +128,15 @@ public class Gui extends JFrame{
         if(!game.getPlayers().get(game.getLeft()).getPlayerCards().isEmpty()) {
             ImageIcon leftCardImage;
             if(game.getPlayers().get(game.getLeft()).getPlayerCards().size()>=9){
-                leftCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\9left.png");
+                leftCardImage = new ImageIcon("src/main/java/fr/ynov/uno/resources/9left.png");
             }else {
-                leftCardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\" + game.getPlayers().get(game.getLeft()).getPlayerCards().size() + "left.png");
+                leftCardImage = new ImageIcon("src/main/java/fr/ynov/uno/resources/" + game.getPlayers().get(game.getLeft()).getPlayerCards().size() + "left.png");
             }
             JLabel leftCardLabel = new JLabel(leftCardImage);
                 leftPlayerCards.add(leftCardLabel);
             }
         else {
-            ImageIcon winner = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\winner.png");
+            ImageIcon winner = new ImageIcon("src/main/java/fr/ynov/uno/resources/winner.png");
             JLabel label = new JLabel(winner);
             leftPlayerCards.add(label);
         }
@@ -151,7 +151,7 @@ public class Gui extends JFrame{
     public void chooseColor(Game game){
         playerCards.removeAll();
         for (int i = 0; i < game.getColors().size(); i++) {
-            ImageIcon cardImage = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\change-color"+game.getColorNames().get(i)+".png");
+            ImageIcon cardImage = new ImageIcon("src/main/java/fr/ynov/uno/resources/change-color"+game.getColorNames().get(i)+".png");
             JButton card = newCardButton(cardImage);
             final Color color = game.getColors().get(i);
             addHoverBorder(card,color);
@@ -179,10 +179,10 @@ public class Gui extends JFrame{
         centreCards.removeAll();
         centre.removeAll();
         centre.add(centreCards);
-        ImageIcon topCard = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\"+game.getUsedCards().getLast().getName()+".png");
+        ImageIcon topCard = new ImageIcon("src/main/java/fr/ynov/uno/resources/"+game.getUsedCards().getLast().getName()+".png");
         JLabel topCardLabel = new JLabel(topCard);
         centreCards.add(topCardLabel);
-        ImageIcon basicCard = new ImageIcon("src\\main\\java\\fr\\ynov\\uno\\resources\\back.png");
+        ImageIcon basicCard = new ImageIcon("src/main/java/fr/ynov/uno/resources/back.png");
         JButton pickupCard=newCardButton(basicCard);
         pickupCard.addActionListener(e -> {
             game.setChoice(0);
