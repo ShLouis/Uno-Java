@@ -37,7 +37,7 @@ public class Gui extends JFrame{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         frame.setSize(1600,180);
-        Image icon = Toolkit.getDefaultToolkit().getImage("src\\main\\java\\fr\\ynov\\uno\\resources\\uno_logo.png");
+        Image icon = Toolkit.getDefaultToolkit().getImage("src/main/java/fr/ynov/uno/resources/uno_logo.png");
         frame.setIconImage(icon);
 
         playerCards= new JPanel();
